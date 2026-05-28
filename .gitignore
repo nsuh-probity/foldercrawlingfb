@@ -1,0 +1,7 @@
+# Generated package outputs
+output/
+*.tar.gz
+*.sha256
+
+# Test receive folders
+receiver/
