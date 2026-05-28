@@ -21,7 +21,7 @@ if [ ! -d "$SOURCE_FOLDER" ]; then
     exit 1
 fi
 
-
+mkdir -p "$OUTPUT_DIR" #this means to create the output directory if it doesn't exist
 
 
 echo "Folder Entered: $SOURCE_FOLDER"
@@ -37,7 +37,10 @@ fi
 echo "Package created successfully: $PACKAGE_NAME"
 
 echo "Generating SHA256 hash..."
-sha256sum "$PACKAGE_NAME" > "$HASH_FILE" #this means to generate the hash of the package and save it to a file called folder_package_hash.sha256
+(
+    cd "$OUTPUT_DIR" || exit 1
+    sha256sum "$(basename "$PACKAGE_NAME")" > "$(basename "$HASH_FILE")"
+) #this means to change the directory to the output directory and then generate the SHA256 hash of the package and save it to the hash file. The basename command is used to get the filename without the path.
 
 if [ $? -ne 0 ]; then
     echo "Error: Failed to generate hash."
