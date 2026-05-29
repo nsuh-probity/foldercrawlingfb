@@ -2,6 +2,8 @@ import os
 import argparse
 import sys
 
+sys.stdout.reconfigure(encoding="utf-8")
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--d", required=True) #makes sure directory we want to crawl through is provided
 parser.add_argument("--b", nargs="+") #blacklist function, nargs allows multiple items in a list
