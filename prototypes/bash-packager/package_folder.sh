@@ -1,5 +1,7 @@
 #!/bin/bash
-#SEND SIDE SIM
+# SEND SIDE SIM
+# Packages a folder into a tar.gz archive with an optional file filter (blacklist/whitelist),
+# then generates a SHA256 hash of the resulting archive.
 echo "Starting folder packaging process..."
 
 SOURCE_FOLDER="$1"
@@ -52,6 +54,7 @@ PY_ARGS=(python parsing.py --d "$SOURCE_FOLDER")
 [[ ${#BLACKLIST[@]} -gt 0 ]] && PY_ARGS+=(--b "${BLACKLIST[@]}")
 [[ ${#WHITELIST[@]} -gt 0 ]] && PY_ARGS+=(--w "${WHITELIST[@]}")
 
+# Run parsing.py to get the filtered list of relative file paths; strip Windows \r line endings
 mapfile -t FILES < <("${PY_ARGS[@]}" | tr -d '\r')
 
 if [ ${#FILES[@]} -eq 0 ]; then
@@ -112,6 +115,7 @@ fi
 
 echo "Package created successfully: $PACKAGE_NAME"
 
+# Generate SHA256 hash; run in a subshell so sha256sum writes only the bare filename (not a full path) into the hash file
 echo "Generating SHA256 hash..."
 (
     cd "$OUTPUT_DIR" || exit 1
@@ -124,4 +128,4 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "SHA256 hash generated successfully: $HASH_FILE"
-echo "Folder packaging process completed."s
+echo "Folder packaging process completed."
