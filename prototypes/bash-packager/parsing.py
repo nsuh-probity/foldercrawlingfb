@@ -4,7 +4,7 @@ import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--d", required=True) #makes sure directory we want to crawl through is provided
-parser.add_argument("--b", nargs="+") #blacklist function, nargs allows multiple items in a list
+parser.add_argument("--b", nargs="+") #blacklist function, nargs allows multiple items and is stored in a list
 parser.add_argument("--w", nargs="+") #whitelist
 args = parser.parse_args()
 
@@ -21,6 +21,6 @@ for root, dirs, files in os.walk(args.d):
         the endings/filenames included in the argument'''
         if args.w and not any(f.endswith(i) for i in args.w):
             continue
-        
+
         path = os.path.relpath(os.path.join(root, f), args.d).replace('\\', '/')
         sys.stdout.write(path + '\n')
